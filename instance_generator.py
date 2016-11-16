@@ -2,6 +2,8 @@ import argparse, math, sys, glob
 
 import numpy as np
 
+from dlx import *
+
 def args_check(args):
 	if(args.universe_max_value <= 0):
 		print "Error: Biggest value must be a integer bigger than zero."
@@ -79,7 +81,7 @@ if (__name__ == '__main__'):
 
 	subsets = [[]]
 
-	while (not (set.union(*map(set,subsets)) == universe) and not (len(subsets)-1 >= universe_max_size*args.percentage)):
+	while (not (set.union(*map(set,subsets)) == universe) or not (len(subsets)-1 >= universe_max_size*args.percentage)):
 		subset_size = np.random.random_integers(1,subset_max_size+1)
 
 		temp_universe = np.array(list(universe))
@@ -91,10 +93,12 @@ if (__name__ == '__main__'):
 
 	subsets.pop(0)
 
-	print 'Universe:', universe
+	print 'Universe:', sorted(list(universe))
 
 	for s in subsets:
 		print s
+
+
 
 
 
