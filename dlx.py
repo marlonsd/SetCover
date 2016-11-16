@@ -110,11 +110,13 @@ class Matrix():
 	## like this: m.search(0,[]). I tried to keed the code looking as
 	## much as possible like the original definition from Knuth's
 	## article.
-	def search(self, k, o_all):
+	def search(self, k, o_all, answer):
 		if self.h.l == self.h:
+			short_answer = []
 			for o in o_all:
-				print ''.join(self.print_o(o)),
-			print
+				short_answer.append(''.join(self.print_o(o)))
+			# print
+			answer.append(short_answer)
 		## Select leftmost column
 		c = self.h.r
 		self.cover(c)
@@ -122,7 +124,7 @@ class Matrix():
 			o_k = r
 			for j in r.r_sweep():
 				self.cover(j.c)
-			self.search(k+1, o_all+[o_k])
+			self.search(k+1, o_all+[o_k], answer)
 			## Dunno why Knuth put this line in his code, not
 			## necessary. Maybe a premature optimization in mind?
 			#r,c = o_k,r.c 
@@ -140,12 +142,13 @@ class Matrix():
 ##
 ## Run the damn thing
 if __name__ == '__main__':
-	cols=['a','b','c','d']
-	lines=[['a'],['b'],['c'],['d'],
-		['a','b'],['a','c'],['a','d'],['b','c'],
-		['b','d'],['c','d'],['a','b','c'],['a','b','d'],
-		['a','c','d'],['b','c','d'],['a','b','c','d'],]
+	cols=range(5)
+	lines=[[0],[1],[2],[3],[4],[0,4,3],[1,2,3],[2,4],[1,3],[1,2]]
  
 	m = Matrix (cols, lines)
 	#m.print_matrix()
-	m.search(0, [])
+	answer = []
+	m.search(0, [], answer)
+	sorted_a = sorted(answer, key=lambda x: len(x))
+	print len(sorted_a[0])
+	print sorted_a
