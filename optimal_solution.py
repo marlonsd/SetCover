@@ -43,7 +43,3 @@ if (__name__ == '__main__'):
 
 		for line in data[1:]:
 			lines.append(set(map(int,line.split(" "))))
-
-		
-
-
