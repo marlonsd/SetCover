@@ -1,2 +1,6 @@
 .DS_Store
 *.pyc
+*.txt
+*.out
+*.csv
+test/*
