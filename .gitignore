@@ -4,3 +4,6 @@
 *.out
 *.csv
 test/*
+*.o
+*/cleaner
+
