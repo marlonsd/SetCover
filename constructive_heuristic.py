@@ -33,6 +33,8 @@ def first_fit_selection(cols, lines):
 
 	n_sets_chosen = 0
 
+	lines = sorted(lines,key=lambda x : len(x))[::-1]
+
 	while(not (in_set == cols) and len(lines) > 0):
 
 		i = 0
