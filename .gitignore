@@ -7,3 +7,4 @@ test/*
 *.o
 */cleaner
 report/
+reference/
