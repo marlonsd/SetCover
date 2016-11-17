@@ -60,8 +60,8 @@ class Matrix():
 			h.l.r.l = h.l
 			h.l.r.r = h
 			h.l = h.l.r
-			h.l.n = label
-			self.hdic[label] = h.l
+			h.l.n = str(label)
+			self.hdic[str(label)] = h.l
  
 		## Add lines to the matrix
 		for ll in lines:
@@ -69,7 +69,7 @@ class Matrix():
 			for l in ll:
 				q = Node()
 				## Get column header
-				c = self.hdic[l]
+				c = self.hdic[str(l)]
  
 				## Add new node to column bottom.
 				q.u = c.u
@@ -114,7 +114,7 @@ class Matrix():
 		if self.h.l == self.h:
 			short_answer = []
 			for o in o_all:
-				short_answer.append(''.join(self.print_o(o)))
+				short_answer.append(','.join(self.print_o(o)))
 			# print
 			answer.append(short_answer)
 		## Select leftmost column
@@ -138,9 +138,7 @@ class Matrix():
 		for x in r.r_sweep():
 			out.append(x.c.n)
 		return out
- 
-##
-## Run the damn thing
+
 if __name__ == '__main__':
 	cols=range(5)
 	lines=[[0],[1],[2],[3],[4],[0,4,3],[1,2,3],[2,4],[1,3],[1,2]]
