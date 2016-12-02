@@ -8,6 +8,20 @@ from itertools import chain, combinations
 
 import numpy as np
 
+def exact_cover(lines, full_set):
+	full_set = set(full_set)
+	for j in range(2,len(lines)):
+
+		iterations = combinations(range(len(lines)), j)
+
+		for it in iterations:
+			it_set = set()
+			for i in it:
+				it_set.update(lines[i])
+			if it_set == full_set:
+				return j, it
+	return 0, None
+
 if (__name__ == '__main__'):
 
 	### Arguments Treatment ###
@@ -43,3 +57,9 @@ if (__name__ == '__main__'):
 
 		for line in data[1:]:
 			lines.append(set(map(int,line.split(" "))))
+
+		t0 = time()
+
+		size, indexes = exact_cover(lines, cols)
+
+		print size, time()-t0
