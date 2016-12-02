@@ -148,5 +148,5 @@ if __name__ == '__main__':
 	answer = []
 	m.search(0, [], answer)
 	sorted_a = sorted(answer, key=lambda x: len(x))
-	print len(sorted_a[0])
+	print len(sorted_a[-1])
 	print sorted_a
