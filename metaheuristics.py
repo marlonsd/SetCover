@@ -130,7 +130,7 @@ def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed
 	print 
 
 	for k in range(n_iterations):
-		print "Grasp Iteration", k
+		# print "Grasp Iteration", k
 		solution = constructive_phase(cols, lines, alpha)
 		solution = local_improvement(cols, lines, solution, p, max_flips)
 
