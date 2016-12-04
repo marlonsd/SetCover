@@ -127,8 +127,6 @@ def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed
 	if not seed == None:
 		np.random.seed(seed)
 
-	print 
-
 	for k in range(n_iterations):
 		# print "Grasp Iteration", k
 		solution = constructive_phase(cols, lines, alpha)
