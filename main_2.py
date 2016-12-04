@@ -79,7 +79,7 @@ if (__name__ == '__main__'):
 
 		t0 = time()
 
-		condition, n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed)
+		n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed)
 		print n, "," ,(time() - t0), "," ,
 
 		# t0 = time()

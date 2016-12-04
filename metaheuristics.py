@@ -122,7 +122,7 @@ def local_improvement(cols, lines, solution, p, max_flips):
 
 def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed=None):
 
-	best_solution = None
+	best_known_solution = None
 
 	if not seed == None:
 		np.random.seed(seed)
@@ -134,6 +134,6 @@ def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed
 		solution = constructive_phase(cols, lines, alpha)
 		solution = local_improvement(cols, lines, solution, p, max_flips)
 
-		best_solution, _ = update_solution(best_solution, solution)
+		best_known_solution, _ = update_solution(best_known_solution, solution)
 
-	return best_solution
+	return len(best_known_solution)
