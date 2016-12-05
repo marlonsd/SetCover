@@ -120,7 +120,7 @@ def local_improvement(cols, lines, solution, p, max_flips):
 
 	return best_solution
 
-def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed=None):
+def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed=None, log_file=None):
 
 	best_known_solution = None
 
@@ -128,7 +128,8 @@ def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed
 		np.random.seed(seed)
 
 	for k in range(n_iterations):
-		# print "Grasp Iteration", k
+		if log_file:
+			log_file.write("Grasp Iteration "+str(k)+'\n')
 		solution = constructive_phase(cols, lines, alpha)
 		solution = local_improvement(cols, lines, solution, p, max_flips)
 

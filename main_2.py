@@ -35,6 +35,12 @@ if (__name__ == '__main__'):
 	parser.add_argument("-s","--seed", type=int, default=0,
 						help="Seed for the random algorithms; 0 means no seed being used (Default: 0).")
 
+	parser.add_argument("-l","--log", action="store_true",
+						help="Enable logging ")
+
+	parser.add_argument("-lf","--log_file", type=str, default='log.txt',
+						help="Filename for logging (Default: log.txt).")	
+
 	# Parsing args
 	args = parser.parse_args()
 
@@ -50,13 +56,18 @@ if (__name__ == '__main__'):
 	if max_flips <= 0:
 		max_flips = None
 
-
 	if seed <= 0:
 		seed = None
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
 	print "filename", "," , "grasp", "," , "time (seg)"#, "," , "first_fit", "," , "time (seg)", "," , "error"
+
+	log = None
+
+	if args.log:
+		log = open(args.log_file, 'w')
+		log.close()
 
 	for file in files:
 		f = open(file, 'r')
@@ -65,8 +76,6 @@ if (__name__ == '__main__'):
 
 		problem_name = file.split("/")[-1].split(".")[0]
 		number_instances, max_value = map(int,data[0].split(" "))
-
-		print problem_name, "," ,
 
 		cols = set(range(1,max_value+1))
 
@@ -77,11 +86,24 @@ if (__name__ == '__main__'):
 		for line in data[1:]:
 			lines.append(set(map(int,line.split(" "))))
 
+		print problem_name, "," ,
+
+		if args.log:
+			log = open(args.log_file, 'w+')
+			log.write(problem_name+'\n')
+
 		t0 = time()
 
-		n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed)
+		n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed, log_file=log)
 		print n, "," ,(time() - t0), "," ,
 
+		print
 		# t0 = time()
 		# condition, n = first_fit_selection(copy(cols),copy(lines))
 		# print n, "," , (time() - t0), "," ,
+
+		f.close()
+
+		if args.log:
+			log.write("\n")
+			log.close()
