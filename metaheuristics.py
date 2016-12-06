@@ -225,7 +225,7 @@ def genetic_algorithm(cols, lines, n_iterations=100, alpha=0.9, population_size=
 		population.append(solution)
 
 	# Evaluation of fitness
-	sorted(population, key=lambda x : len(x))
+	population = sorted(population, key=lambda x : len(x))
 
 	for k in range(n_iterations):
 		if log_file:
@@ -243,7 +243,7 @@ def genetic_algorithm(cols, lines, n_iterations=100, alpha=0.9, population_size=
 		population = reproduction(cols, lines, population, mutation_ratio)
 
 		# Evaluation of fitness
-		sorted(population, key=lambda x : len(x))
+		population = sorted(population, key=lambda x : len(x))
 
 		# Selection of the fittest
 		population = population[:population_size]
