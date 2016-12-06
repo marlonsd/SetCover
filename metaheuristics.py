@@ -159,9 +159,10 @@ def best_fit(cols, lines, s):
 			if (is_feasible(cols, lines, short_solution)):
 				if (len(short_solution) < len(best_solution)):
 					# print "\t\tBest Solution size", len(short_solution)
+					best_solutions.insert(0, copy(short_solution))
+					best_solution = copy(short_solution)
+				else:
 					best_solutions.append(copy(short_solution))
-					# best_solutions.insert(0, copy(short_solution))
-					best_solution = copy(short_solution)					
 
 	return sorted(best_solution)
 

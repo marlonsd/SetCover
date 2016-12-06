@@ -61,7 +61,10 @@ if (__name__ == '__main__'):
 
 	files = sorted(glob.glob(path+"/*."+file_format))
 
-	print "filename", "," , "grasp", "," , "time (seg)"#, "," , "first_fit", "," , "time (seg)", "," , "error"
+	print "filename",
+	# print "," , "grasp", "," , "time (seg)",
+	print "," , "genetic", "," , "time (seg)",
+	print
 
 	log = None
 
