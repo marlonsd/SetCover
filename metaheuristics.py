@@ -6,6 +6,9 @@ from copy import copy
 def is_feasible(cols, lines, solution):
 	sol_set = set()
 
+	if len(solution) == 0:
+		return False
+
 	for pos in solution:
 		sol_set.update(lines[pos])
 
@@ -157,12 +160,14 @@ def best_fit(cols, lines, s):
 			short_solution.pop(i)
 
 			if (is_feasible(cols, lines, short_solution)):
+				# best_solutions.append(copy(short_solution))
 				if (len(short_solution) < len(best_solution)):
 					# print "\t\tBest Solution size", len(short_solution)
 					best_solutions.insert(0, copy(short_solution))
 					best_solution = copy(short_solution)
-				else:
-					best_solutions.append(copy(short_solution))
+
+
+
 
 	return sorted(best_solution)
 
@@ -185,6 +190,34 @@ def mutation(cols, lines, s):
 
 	return sorted(saved_solution)
 
+# def reproduction(cols, lines, p, m):
+
+# 	if (len(p) == 1):
+# 		return p
+
+# 	if (len(p) % 2):
+# 		p.pop(-1)
+
+# 	offspring = []
+
+# 	i = 0 
+# 	while(len(p) > 0):
+# 		# print "\tReprodution", i
+# 		parent1 = p.pop(np.random.randint(len(p)))
+# 		offspring.append(parent1)
+
+# 		parent2 = p.pop(np.random.randint(len(p)))
+# 		offspring.append(parent2)
+# 		child = best_fit(cols, lines, sorted(list(set(parent1+parent2))))
+
+# 		if (np.random.random() < m):
+# 			child = mutation(cols, lines, child)
+
+# 		offspring.append(child)
+# 		i+=1
+
+# 	return sorted(offspring)
+
 def reproduction(cols, lines, p, m):
 
 	if (len(p) == 1):
@@ -203,7 +236,26 @@ def reproduction(cols, lines, p, m):
 
 		parent2 = p.pop(np.random.randint(len(p)))
 		offspring.append(parent2)
-		child = best_fit(cols, lines, sorted(list(set(parent1+parent2))))
+		
+		child = []
+		child_cover = set()
+
+		parenting_chromosomes = list(set(parent1+parent2))
+
+		while (not set(cols) == child_cover and len(parenting_chromosomes) > 0):
+			biggest = len(set(lines[parenting_chromosomes[0]]) - child_cover)
+			pos = 0
+
+			for i in range(len(parenting_chromosomes)):
+				chromosome = parenting_chromosomes[i]
+				if len(set(lines[chromosome]) - child_cover) > biggest:
+					biggest = len(set(lines[chromosome]) - child_cover)
+					pos = i
+
+			child.append(parenting_chromosomes[pos])
+			child_cover.update(lines[parenting_chromosomes[pos]])
+
+			parenting_chromosomes.pop(pos)
 
 		if (np.random.random() < m):
 			child = mutation(cols, lines, child)
@@ -213,7 +265,7 @@ def reproduction(cols, lines, p, m):
 
 	return sorted(offspring)
 
-def genetic_algorithm(cols, lines, n_iterations=100, alpha=0.9, population_size=100, cross_over_ration = 0.5,
+def genetic_algorithm(cols, lines, n_iterations=500, alpha=0.9, population_size=1000, cross_over_ration = 0.5,
 					  mutation_ratio=0.2, seed=None, log_file=None):
 
 	if not seed == None:
