@@ -77,6 +77,7 @@ def best_flip(cols, lines, s):
 					# best_solutions.insert(0, copy(short_solution))
 					best_solutions.append(copy(short_solution))
 					best_solution = copy(short_solution)
+					break
 
 	return sorted(best_solution)
 
@@ -148,28 +149,26 @@ def grasp(cols, lines, n_iterations=500, alpha=0.9, p=0.75, max_flips=None, seed
 Genetic Algorithm
 """
 
-def best_fit(cols, lines, s):
-	best_solutions = [copy(s)]
-	best_solution = copy(s)
+def greedy_fit(cols, lines, parenting_chromosomes):
+	child = []
+	child_cover = set()
 
-	while (len(best_solutions) > 0):
-		local_solution = best_solutions.pop(0)
+	while (not set(cols) == child_cover and len(parenting_chromosomes) > 0):
+		biggest = len(set(lines[parenting_chromosomes[0]]) - child_cover)
+		pos = 0
 
-		for i in range(len(local_solution)):
-			short_solution = copy(local_solution)
-			short_solution.pop(i)
+		for i in range(len(parenting_chromosomes)):
+			chromosome = parenting_chromosomes[i]
+			if len(set(lines[chromosome]) - child_cover) > biggest:
+				biggest = len(set(lines[chromosome]) - child_cover)
+				pos = i
 
-			if (is_feasible(cols, lines, short_solution)):
-				# best_solutions.append(copy(short_solution))
-				if (len(short_solution) < len(best_solution)):
-					# print "\t\tBest Solution size", len(short_solution)
-					best_solutions.insert(0, copy(short_solution))
-					best_solution = copy(short_solution)
+		child.append(parenting_chromosomes[pos])
+		child_cover.update(lines[parenting_chromosomes[pos]])
 
+		parenting_chromosomes.pop(pos)
 
-
-
-	return sorted(best_solution)
+	return sorted(child)
 
 def mutation(cols, lines, s):
 	new_solution = copy(s)
@@ -190,34 +189,6 @@ def mutation(cols, lines, s):
 
 	return sorted(saved_solution)
 
-# def reproduction(cols, lines, p, m):
-
-# 	if (len(p) == 1):
-# 		return p
-
-# 	if (len(p) % 2):
-# 		p.pop(-1)
-
-# 	offspring = []
-
-# 	i = 0 
-# 	while(len(p) > 0):
-# 		# print "\tReprodution", i
-# 		parent1 = p.pop(np.random.randint(len(p)))
-# 		offspring.append(parent1)
-
-# 		parent2 = p.pop(np.random.randint(len(p)))
-# 		offspring.append(parent2)
-# 		child = best_fit(cols, lines, sorted(list(set(parent1+parent2))))
-
-# 		if (np.random.random() < m):
-# 			child = mutation(cols, lines, child)
-
-# 		offspring.append(child)
-# 		i+=1
-
-# 	return sorted(offspring)
-
 def reproduction(cols, lines, p, m):
 
 	if (len(p) == 1):
@@ -230,32 +201,13 @@ def reproduction(cols, lines, p, m):
 
 	i = 0 
 	while(len(p) > 0):
-		# print "\tReprodution", i
 		parent1 = p.pop(np.random.randint(len(p)))
 		offspring.append(parent1)
 
 		parent2 = p.pop(np.random.randint(len(p)))
 		offspring.append(parent2)
 		
-		child = []
-		child_cover = set()
-
-		parenting_chromosomes = list(set(parent1+parent2))
-
-		while (not set(cols) == child_cover and len(parenting_chromosomes) > 0):
-			biggest = len(set(lines[parenting_chromosomes[0]]) - child_cover)
-			pos = 0
-
-			for i in range(len(parenting_chromosomes)):
-				chromosome = parenting_chromosomes[i]
-				if len(set(lines[chromosome]) - child_cover) > biggest:
-					biggest = len(set(lines[chromosome]) - child_cover)
-					pos = i
-
-			child.append(parenting_chromosomes[pos])
-			child_cover.update(lines[parenting_chromosomes[pos]])
-
-			parenting_chromosomes.pop(pos)
+		child = greedy_fit(cols, lines, list(set(parent1+parent2)))
 
 		if (np.random.random() < m):
 			child = mutation(cols, lines, child)
