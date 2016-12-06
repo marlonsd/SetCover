@@ -5,7 +5,7 @@ import numpy as np
 from copy import copy
 from time import time
 
-from metaheuristics import grasp
+from metaheuristics import grasp, genetic_algorithm
 
 if (__name__ == '__main__'):
 
@@ -92,15 +92,15 @@ if (__name__ == '__main__'):
 			log = open(args.log_file, 'w+')
 			log.write(problem_name+'\n')
 
-		t0 = time()
+		# t0 = time()
+		# n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed, log_file=log)
+		# print n, "," ,(time() - t0), "," ,
 
-		n = grasp(copy(cols),copy(lines), n_iterations=n_iterations, alpha=alpha, p=p, max_flips=max_flips, seed=seed, log_file=log)
+		t0 = time()
+		n = genetic_algorithm(copy(cols),copy(lines))
 		print n, "," ,(time() - t0), "," ,
 
 		print
-		# t0 = time()
-		# condition, n = first_fit_selection(copy(cols),copy(lines))
-		# print n, "," , (time() - t0), "," ,
 
 		f.close()
 
